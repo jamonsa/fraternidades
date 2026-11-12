@@ -1,0 +1,34 @@
+@let i = integrante();
+
+<div class="m-card">
+  <div class="m-card-header">
+    <span class="m-card-name">#{{ i.id }} - {{ i.nombre }}</span>
+    @if (alDia()) {
+      <span class="badge badge-ok">Al día</span>
+    } @else {
+      <span class="badge badge-debt">Debe {{ pendientes() }} {{ pendientes() === 1 ? 'mes' : 'meses' }}</span>
+    }
+  </div>
+
+  <div class="m-card-body">
+    <div>Meses Pag.: <b>{{ i.pagados }} / 12</b></div>
+    <div>Deuda Total: <b>{{ deudaTotal() }} Bs</b></div>
+    <div>Aporte Pag.: <b>{{ aportePagado() }} Bs</b></div>
+    <div>Multa Debe: <b>{{ i.multaDebe }} Bs</b></div>
+  </div>
+
+  <details>
+    <summary>
+      Ver detalle de los 12 meses
+      <span class="summary-hint">(* con multa)</span>
+    </summary>
+    <div class="months-grid">
+      @for (mes of i.detalleMeses; track mes.nombre) {
+        <div class="month-item" [class]="'month-' + mes.tipo">
+          <span>{{ mes.nombre }}</span>
+          <span><b>{{ mes.texto }}</b></span>
+        </div>
+      }
+    </div>
+  </details>
+</div>

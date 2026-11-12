@@ -1,0 +1,31 @@
+<div class="container">
+  <div class="header-flex">
+    <div>
+      <h1>Pichiroses 2026</h1>
+      <p class="subtitle">Control de Aportes y Multas</p>
+    </div>
+    @switch (estado()) {
+      @case ('listo') { <span class="live-pill">● Sincronizado</span> }
+      @case ('error') { <span class="live-pill live-pill-error">● Sin conexión</span> }
+      @default { <span class="live-pill live-pill-loading">● Sincronizando</span> }
+    }
+  </div>
+
+  <app-resumen-cards [resumen]="resumen()" [cargando]="estado() !== 'listo'" />
+
+  <h2>Estado de Integrantes</h2>
+
+  <div class="card-list">
+    @switch (estado()) {
+      @case ('cargando') { <div class="loading">Cargando datos...</div> }
+      @case ('error') { <div class="loading">No se pudieron cargar los datos. Intenta recargar la página.</div> }
+      @default {
+        @for (integrante of integrantes(); track integrante.id) {
+          <app-integrante-card [integrante]="integrante" />
+        } @empty {
+          <div class="loading">No hay integrantes registrados.</div>
+        }
+      }
+    }
+  </div>
+</div>

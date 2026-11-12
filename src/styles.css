@@ -1,0 +1,33 @@
+/* Estilos globales — tema iOS */
+:root {
+  --bg-color: #f2f2f7;
+  --card-bg: #ffffff;
+  --text-primary: #1c1c1e;
+  --text-secondary: #8e8e93;
+  --accent-green: #34c759;
+  --accent-red: #ff3b30;
+  --accent-yellow: #ffcc00;
+  --accent-blue: #007aff;
+  --border-color: #e5e5ea;
+  --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background: var(--bg-color);
+  color: var(--text-primary);
+  margin: 0;
+  padding: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 { font-size: 24px; font-weight: 700; color: var(--text-primary); margin: 0; letter-spacing: -0.5px; }
+h2 { font-size: 18px; font-weight: 600; color: var(--text-primary); margin: 25px 0 10px 5px; letter-spacing: -0.3px; }
+
+.badge { padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; display: inline-block; }
+.badge-ok { background: #e8f8ed; color: var(--accent-green); }
+.badge-debt { background: #ffebee; color: var(--accent-red); }
+
+@media screen and (max-width: 768px) {
+  body { padding: 10px; }
+}
