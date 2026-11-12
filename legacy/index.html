@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control de Cobranzas - Pichiroses 2026</title>
+    <style>
+        :root {
+            --bg-color: #f2f2f7;
+            --card-bg: #ffffff;
+            --text-primary: #1c1c1e;
+            --text-secondary: #8e8e93;
+            --accent-green: #34c759;
+            --accent-red: #ff3b30;
+            --accent-yellow: #ffcc00;
+            --border-color: #e5e5ea;
+        }
+
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, sans-serif; 
+            background: var(--bg-color); 
+            color: var(--text-primary); 
+            margin: 0; 
+            padding: 16px; 
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container { 
+            max-width: 900px; 
+            margin: 0 auto; 
+        }
+
+        .header-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        h1 { font-size: 24px; font-weight: 700; color: var(--text-primary); margin: 0; letter-spacing: -0.5px; }
+        h2 { font-size: 18px; font-weight: 600; color: var(--text-primary); margin: 25px 0 10px 5px; letter-spacing: -0.3px; }
+        p.subtitle { color: var(--text-secondary); margin: 0; font-size: 13px; }
+        
+        .live-pill { 
+            background: #e8f8ed; 
+            color: var(--accent-green); 
+            font-size: 11px; 
+            font-weight: 600; 
+            padding: 4px 10px; 
+            border-radius: 20px; 
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .summary-box { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 25px; }
+        .card { background: var(--card-bg); padding: 16px; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); border: 1px solid var(--border-color); }
+        .card h3 { margin: 0 0 6px 0; font-size: 11px; font-weight: 600; text-transform: uppercase; color: var(--text-secondary); letter-spacing: 0.5px; }
+        .card p { margin: 0; font-size: 18px; font-weight: 700; color: var(--text-primary); }
+        
+        .card-green { border-top: 4px solid var(--accent-green); }
+        .card-red { border-top: 4px solid var(--accent-red); }
+        .card-yellow { border-top: 4px solid var(--accent-yellow); }
+
+        .badge { padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; display: inline-block; }
+        .badge-ok { background: #e8f8ed; color: var(--accent-green); }
+        .badge-debt { background: #ffebee; color: var(--accent-red); }
+        
+        .loading { text-align: center; padding: 25px; font-style: italic; color: var(--text-secondary); }
+
+        /* TARJETAS ESTILO IOS CON ACORDEÓN */
+        .card-list { display: flex; flex-direction: column; gap: 12px; }
+        .m-card { 
+            background: var(--card-bg); 
+            border: 1px solid var(--border-color); 
+            border-radius: 16px; 
+            padding: 16px; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03); 
+        }
+        .m-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .m-card-name { font-weight: 700; font-size: 15px; color: var(--text-primary); }
+        
+        .m-card-body { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 6px; 
+            font-size: 12px; 
+            color: var(--text-secondary); 
+            background: #fafafa; 
+            padding: 12px; 
+            border-radius: 12px; 
+            margin-bottom: 10px; 
+        }
+        .m-card-body b { color: var(--text-primary); }
+
+        details {
+            border-top: 1px solid var(--border-color);
+            padding-top: 10px;
+            margin-top: 8px;
+        }
+        summary {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--accent-blue, #007aff);
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        summary::-webkit-details-marker { display: none; }
+        summary::after {
+            content: '▼';
+            font-size: 10px;
+            transition: transform 0.2s;
+        }
+        details[open] summary::after {
+            transform: rotate(180deg);
+        }
+
+        .months-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 6px;
+            margin-top: 10px;
+            background: #f8f8f6;
+            padding: 10px;
+            border-radius: 10px;
+        }
+        .month-item {
+            font-size: 12px;
+            padding: 6px 10px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 500;
+        }
+        .month-ok {
+            background: #e8f8ed;
+            color: #155724;
+        }
+        .month-debt {
+            background: #ffebee;
+            color: #c0392b;
+            font-weight: 600;
+        }
+        .month-fine {
+            background: #fff3cd;
+            color: #856404;
+            font-weight: 600;
+            border: 1px solid #ffeeba;
+        }
+
+        @media screen and (max-width: 768px) {
+            body { padding: 10px; }
+            .summary-box { grid-template-columns: 1fr; gap: 8px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-flex">
+        <div>
+            <h1>Pichiroses 2026</h1>
+            <p class="subtitle">Control de Aportes y Multas</p>
+        </div>
+        <span class="live-pill">● Sincronizado</span>
+    </div>
+
+    <div class="summary-box">
+        <div class="card card-green">
+            <h3>Recaudado</h3>
+            <p id="totalRecaudado">Cargando...</p>
+        </div>
+        <div class="card card-red">
+            <h3>Pendiente</h3>
+            <p id="totalPendiente">Cargando...</p>
+        </div>
+        <div class="card card-yellow">
+            <h3>Al Día</h3>
+            <p id="totalAlDia">Cargando...</p>
+        </div>
+    </div>
+
+    <h2>Estado de Integrantes</h2>
+    
+    <div id="cardList" class="card-list">
+        <div class="loading">Cargando datos...</div>
+    </div>
+</div>
+
+<script>
+    let datosIntegrantes = [];
+    const RAW_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSSTjvJT1OzMsvCgjD8nhA_yTRPGuQx03Hc9FBoIvI-9xSCcuwF1wDVzRo3a6NmZQ/pub?gid=2080222152&single=true&output=csv';
+    const nombresMeses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+
+    async function cargarDatosDesdeSheet() {
+        try {
+            const response = await fetch(RAW_CSV_URL);
+            if (!response.ok) throw new Error("Error de conexión");
+            const csvText = await response.text();
+            procesarCSV(csvText);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    function parseCSVLine(text) {
+        let result = [];
+        let insideQuotes = false;
+        let entry = '';
+        for (let i = 0; i < text.length; i++) {
+            let c = text[i];
+            if (c === '"') {
+                insideQuotes = !insideQuotes;
+            } else if (c === ',' && !insideQuotes) {
+                result.push(entry);
+                entry = '';
+            } else {
+                entry += c;
+            }
+        }
+        result.push(entry);
+        return result;
+    }
+
+    function procesarCSV(text) {
+        let lines = text.split(/\r?\n/);
+        datosIntegrantes = [];
+
+        for (let i = 0; i < lines.length; i++) {
+            let line = lines[i].trim();
+            if (!line) continue;
+            
+            let cols = parseCSVLine(line);
+            let idStr = (cols[0] || '').replace(/["']/g, "").trim();
+            let nombreStr = (cols[1] || '').replace(/["']/g, "").trim();
+            
+            if (!idStr || isNaN(idStr) || !nombreStr || nombreStr.toUpperCase() === 'TOTAL') continue;
+
+            let mesesPagados = 0;
+            let multaPagadaTotal = 0;
+            let multaDebeTotal = 0;
+            let mesesDetalleList = [];
+
+            for (let m = 0; m < 12; m++) {
+                let baseIdx = 2 + (m * 3);
+                let aporteVal = parseFloat((cols[baseIdx] || '0').replace(/["']/g, "").replace(/\./g, "").replace(",", ".")) || 0;
+                let mDebeVal = parseFloat((cols[baseIdx + 1] || '0').replace(/["']/g, "").replace(/\./g, "").replace(",", ".")) || 0;
+                let mPagoVal = parseFloat((cols[baseIdx + 2] || '0').replace(/["']/g, "").replace(/\./g, "").replace(",", ".")) || 0;
+
+                let estadoMes = "";
+                let tipoMes = "ok";
+
+                if (aporteVal >= 150) {
+                    mesesPagados++;
+                    tipoMes = "ok";
+                    if (mDebeVal > 0) {
+                        estadoMes = `150 + ${mDebeVal} multa`;
+                    } else {
+                        estadoMes = `150 Bs`;
+                    }
+                } else {
+                    if (mDebeVal > 0) {
+                        estadoMes = `Pendiente*`;
+                        tipoMes = "fine";
+                    } else {
+                        estadoMes = `Pendiente`;
+                        tipoMes = "debt";
+                    }
+                }
+
+                mesesDetalleList.push({
+                    nombre: nombresMeses[m],
+                    texto: estadoMes,
+                    tipo: tipoMes
+                });
+
+                if (mDebeVal > 0) multaDebeTotal += mDebeVal;
+                if (mPagoVal > 0) multaPagadaTotal += mPagoVal;
+            }
+
+            datosIntegrantes.push({
+                id: parseInt(idStr),
+                nombre: nombreStr,
+                pagados: mesesPagados,
+                multaPagada: multaPagadaTotal,
+                multaDebe: multaDebeTotal,
+                detalleMeses: mesesDetalleList
+            });
+        }
+
+        renderizarTarjetas();
+    }
+
+    function renderizarTarjetas() {
+        let cardList = document.querySelector("#cardList");
+        cardList.innerHTML = "";
+        
+        let acumuladoRecaudadoAportes = 0;
+        let acumuladoRecaudadoMultas = 0;
+        let sumaDeudaTotal = 0;
+        let alDiaCount = 0;
+
+        datosIntegrantes.forEach(item => {
+            let aportePagadoBs = item.pagados * 150;
+            let deudaAporteBs = (12 - item.pagados) * 150;
+            let deudaTotalBs = deudaAporteBs + item.multaDebe;
+            let mesesPendientes = 12 - item.pagados;
+            
+            acumuladoRecaudadoAportes += aportePagadoBs;
+            acumuladoRecaudadoMultas += item.multaPagada;
+            sumaDeudaTotal += deudaTotalBs;
+
+            if(item.pagados === 12 && item.multaDebe === 0) alDiaCount++;
+
+            let estadoBadge = (item.pagados === 12 && item.multaDebe === 0) ? 
+                `<span class="badge badge-ok">Al día</span>` : 
+                `<span class="badge badge-debt">Debe ${mesesPendientes} ${mesesPendientes === 1 ? 'mes' : 'meses'}</span>`;
+
+            let mesesHTML = '';
+            item.detalleMeses.forEach(mes => {
+                let claseCSS = 'month-ok';
+                if (mes.tipo === 'debt') claseCSS = 'month-debt';
+                if (mes.tipo === 'fine') claseCSS = 'month-fine';
+
+                mesesHTML += `<div class="month-item ${claseCSS}">
+                    <span>${mes.nombre}</span>
+                    <span><b>${mes.texto}</b></span>
+                </div>`;
+            });
+
+            cardList.innerHTML += `<div class="m-card">
+                <div class="m-card-header">
+                    <span class="m-card-name">#${item.id} - ${item.nombre}</span>
+                    ${estadoBadge}
+                </div>
+                <div class="m-card-body">
+                    <div>Meses Pag.: <b>${item.pagados} / 12</b></div>
+                    <div>Deuda Total: <b>${deudaTotalBs} Bs</b></div>
+                    <div>Aporte Pag.: <b>${aportePagadoBs} Bs</b></div>
+                    <div>Multa Debe: <b>${item.multaDebe} Bs</b></div>
+                </div>
+                <details>
+                    <summary>Ver detalle de los 12 meses <span style="font-size: 11px; font-weight: normal; color: #8e8e93;">(* con multa)</span></summary>
+                    <div class="months-grid">
+                        ${mesesHTML}
+                    </div>
+                </details>
+            </div>`;
+        });
+
+        document.getElementById("totalRecaudado").innerText = (acumuladoRecaudadoAportes + acumuladoRecaudadoMultas).toLocaleString() + " Bs";
+        document.getElementById("totalPendiente").innerText = sumaDeudaTotal.toLocaleString() + " Bs";
+        document.getElementById("totalAlDia").innerText = alDiaCount + " / " + datosIntegrantes.length;
+    }
+
+    cargarDatosDesdeSheet();
+</script>
+
+</body>
+</html>
