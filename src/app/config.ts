@@ -11,7 +11,7 @@ export const APORTE_MENSUAL = 150;
  * en Drive usa "Administrar versiones → Subir nueva versión" sobre el mismo
  * archivo; si subes un archivo nuevo, reemplaza aquí su ID.
  */
-const QR_DRIVE_ID = '15H0TykqV8RVsd9pctZit94ed8gUK3_uN';
+const QR_DRIVE_ID = '1NZ7WkKYCSGS5oAnEJ9F6gA2bqcjQXRlo';
 export const QR_PAGO_IMAGEN_URL = `https://lh3.googleusercontent.com/d/${QR_DRIVE_ID}=w1000`;
 export const QR_PAGO_DESCARGA_URL = `https://drive.google.com/uc?export=download&id=${QR_DRIVE_ID}`;
 export const QR_PAGO_DRIVE_URL = `https://drive.google.com/file/d/${QR_DRIVE_ID}/view`;
