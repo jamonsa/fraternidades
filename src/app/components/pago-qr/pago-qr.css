@@ -1,0 +1,95 @@
+/* Botón flotante estilo iOS */
+.pagar-btn {
+  position: fixed;
+  left: 50%;
+  bottom: calc(16px + env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 26px;
+  border: none;
+  border-radius: 999px;
+  background: var(--accent-blue);
+  color: #fff;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  box-shadow: 0 6px 20px rgba(0, 122, 255, 0.35);
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.pagar-btn:active { transform: translateX(-50%) scale(0.96); }
+.pagar-btn:focus-visible { outline: 3px solid rgba(0, 122, 255, 0.4); outline-offset: 3px; }
+
+/* Hoja inferior (bottom sheet) */
+.hoja {
+  border: none;
+  padding: 0;
+  margin: auto auto 0;
+  width: 100%;
+  max-width: 480px;
+  max-height: 92vh;
+  background: transparent;
+}
+.hoja::backdrop { background: rgba(0, 0, 0, 0.35); }
+.hoja[open] .hoja-contenido { animation: subir 0.25s ease-out; }
+
+.hoja-contenido {
+  background: var(--card-bg);
+  border-radius: 20px 20px 0 0;
+  padding: 10px 20px calc(24px + env(safe-area-inset-bottom));
+  text-align: center;
+}
+.hoja-asa { width: 36px; height: 5px; border-radius: 3px; background: var(--border-color); margin: 0 auto 12px; }
+
+.hoja-header { display: flex; justify-content: space-between; align-items: center; }
+.hoja-header h3 { margin: 0; font-size: 18px; font-weight: 700; letter-spacing: -0.3px; }
+.cerrar-btn {
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 50%;
+  background: var(--bg-color);
+  color: var(--text-secondary);
+  font-size: 14px;
+  cursor: pointer;
+}
+.hoja-texto { color: var(--text-secondary); font-size: 13px; margin: 8px 0 16px; text-align: left; }
+
+.qr-marco {
+  background: #fafafa;
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 14px;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.qr-marco img { width: 100%; max-width: 320px; height: auto; display: block; border-radius: 8px; }
+.qr-error { font-size: 13px; color: var(--text-secondary); display: flex; flex-direction: column; gap: 8px; }
+.qr-error a { color: var(--accent-blue); font-weight: 600; }
+
+.descargar-btn {
+  display: block;
+  margin-top: 14px;
+  padding: 13px;
+  border-radius: 12px;
+  background: #e5f1ff;
+  color: var(--accent-blue);
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+@keyframes subir {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+@media (min-width: 769px) {
+  .hoja { margin: auto; }
+  .hoja-contenido { border-radius: 20px; }
+}

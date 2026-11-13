@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { IntegranteCard } from './components/integrante-card/integrante-card';
+import { PagoQr } from './components/pago-qr/pago-qr';
 import { ResumenCards } from './components/resumen-cards/resumen-cards';
 import { Integrante } from './models/integrante';
 import { CobranzasService } from './services/cobranzas.service';
@@ -10,7 +11,7 @@ type EstadoCarga = 'cargando' | 'listo' | 'error';
 
 @Component({
   selector: 'app-root',
-  imports: [ResumenCards, IntegranteCard],
+  imports: [ResumenCards, IntegranteCard, PagoQr],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './app.html',
   styleUrl: './app.css',

@@ -1,4 +1,5 @@
-.container { max-width: 900px; margin: 0 auto; }
+/* padding-bottom: espacio para que el botón flotante "Pagar con QR" no tape la última tarjeta */
+.container { max-width: 900px; margin: 0 auto; padding-bottom: 90px; }
 
 .header-flex {
   display: flex;
